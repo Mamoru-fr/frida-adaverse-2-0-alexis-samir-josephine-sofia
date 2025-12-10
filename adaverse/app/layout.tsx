@@ -1,16 +1,6 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type {Metadata} from "next";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,9 +15,26 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="antialiased"
       >
-        {children}
+        <div className="min-h-[95vh] flex flex-col relative">
+          <div className="fixed inset-0 -z-10 overflow-hidden">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute min-w-full min-h-full object-cover"
+            >
+              <source src="/videos/background.mp4" type="video/mp4" />
+            </video>
+
+            <div className="absolute inset-0 bg-black/60"></div>
+          </div>
+          {children}
+
+        </div>
+        <Footer />
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 "use client"
 
-import Form from "@/components/Form";
+import AddProjectModal from "@/components/AddProjectModal";
 
 type Props = {
     onClose: () => void;
@@ -8,7 +8,7 @@ type Props = {
     getpromo: any;
 };
 
-export default function Modal({ onClose, gettype, getpromo }: Props) {
+export default function AddProjectButton({ onClose, gettype, getpromo }: Props) {
 
     return (
         <div className="modal fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
@@ -23,7 +23,7 @@ export default function Modal({ onClose, gettype, getpromo }: Props) {
                 >
                     ✕
                 </button>
-                <Form promo={getpromo} type={gettype} onSuccess={onClose} />
+                <AddProjectModal promo={getpromo} type={gettype} onSuccess={onClose} />
             </div>
         </div>
     )

@@ -1,25 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react";
-import Modal from "../components/Modal";
+import {useState, useEffect} from "react";
 import Header from "../components/Header";
-import Cards from "../components/Cards";
-import Footer from "../components/Footer";
-
-interface ProjectTypes {
-  id: number;
-  name: string;
-}
-
-interface Promotions {
-  id: number;
-  name: string;
-  startDate: Date;
-}
+import ProjectsCards from "../components/ProjectsCards";
+import {ProjectTypes, Promotions} from "../content/interface";
+import AddProjectButton from "../components/AddProjectButton";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const [getTypes, setGetTypes] = useState<ProjectTypes[]>([]);
   const [getPromotions, setGetPromotions] = useState<Promotions[]>([]);
   const [getFormData, setGetFormData] = useState<any>([]);
@@ -41,25 +29,21 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch("/api/project_types");
-      const result = await res.json();
-      setGetTypes(result);
-    }
-    fetchData();
-  }, []);
+  async function fetchDataType() {
+    const res = await fetch("/api/project_types");
+    const result = await res.json();
+    setGetTypes(result);
+  }
+
+  async function fetchDataPromotions() {
+    const res = await fetch("/api/promotions");
+    const result = await res.json();
+    setGetPromotions(result);
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await fetch("/api/promotions");
-      const result = await res.json();
-      setGetPromotions(result);
-    }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
+    fetchDataType();
+    fetchDataPromotions();
     fetchProjects();
   }, []);
 
@@ -82,20 +66,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative">
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute min-w-full min-h-full object-cover"
-        >
-          <source src="/videos/background.mp4" type="video/mp4" />
-        </video>
-
-        <div className="absolute inset-0 bg-black/60"></div>
-      </div>
+    <div className="min-h-full flex flex-col relative">
 
       <div className="p-2 m-2 rounded-xl relative z-10">
         <Header
@@ -107,7 +78,7 @@ export default function Home() {
       </div>
 
       {isModalOpen && (
-        <Modal
+        <AddProjectButton
           getpromo={getPromotions}
           gettype={getTypes}
           onClose={() => {
@@ -123,7 +94,7 @@ export default function Home() {
           {isLoading ? (
             <p className="text-gray-400">Chargement des projets...</p>
           ) : (
-            <Cards
+            <ProjectsCards
               form={filteredProjects}
               onProjectDeleted={handleProjectDeleted}
             />
@@ -131,7 +102,7 @@ export default function Home() {
         </div>
       </main>
 
-      <Footer />
+      
     </div>
   )
 }

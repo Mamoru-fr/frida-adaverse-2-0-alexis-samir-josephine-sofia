@@ -8,7 +8,7 @@ interface EditProps {
     onDelete: () => void;
 }
 
-export function Edit({ closeEdit, projectId, onDelete }: EditProps) {
+export function EditProjectsCards({ closeEdit, projectId, onDelete }: EditProps) {
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handleDelete = async () => {

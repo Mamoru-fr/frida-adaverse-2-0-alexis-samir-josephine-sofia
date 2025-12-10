@@ -1,16 +1,15 @@
 'use client'
 
-import Image from 'next/image'
 import { useState } from 'react'
-import { Edit } from './Edit'
-import formatDate from './CleanDate'
+import { EditProjectsCards } from './EditProjectsCards'
+import { FormatDate } from '@/utils/FormatDate'
 
 interface CardsProps {
     form: any[];
     onProjectDeleted: () => void;
 }
 
-export default function Cards({ form, onProjectDeleted }: CardsProps) {
+export default function ProjectsCards({ form, onProjectDeleted }: CardsProps) {
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null)
 
     return (
@@ -61,7 +60,7 @@ export default function Cards({ form, onProjectDeleted }: CardsProps) {
                                     </p>
                                     {item.createdAt && (
                                         <p className='text-gray-400 text-xs'>
-                                            {formatDate(item.createdAt)}
+                                            Le {FormatDate(item.createdAt)}
                                         </p>
                                     )}
                                 </div>
@@ -123,7 +122,7 @@ export default function Cards({ form, onProjectDeleted }: CardsProps) {
                             </div>
 
                             {selectedProjectId === item.id && (
-                                <Edit
+                                <EditProjectsCards
                                     closeEdit={() => setSelectedProjectId(null)}
                                     projectId={item.id}
                                     onDelete={onProjectDeleted}

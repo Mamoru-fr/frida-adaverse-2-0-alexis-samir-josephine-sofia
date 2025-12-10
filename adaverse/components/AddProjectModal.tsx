@@ -1,14 +1,16 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { Promotions, ProjectTypes } from "@/content/interface";
+import { FormAction } from "@/actions/actions";
 
 type Props = {
-    promo: Array<{ id: number; name: string }>;
-    type: Array<{ id: number; name: string }>;
+    promo: Array<Promotions>;
+    type: Array<ProjectTypes>;
     onSuccess: () => void; 
 };
 
-export default function Form({ promo, type, onSuccess }: Props) {
+export default function AddProjectModal({ promo, type, onSuccess }: Props) {
     const [newProjectType, setNewProjectType] = useState({
         title: "",
         github_url: "",
@@ -20,48 +22,6 @@ export default function Form({ promo, type, onSuccess }: Props) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const FormAction = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setError(null);
-
-        try {
-            const response = await fetch("/api/project_students", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(newProjectType),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                console.log("Projet créé avec succès :", data);
-                
-                setNewProjectType({
-                    title: "",
-                    github_url: "",
-                    demo_url: "",
-                    promotion_id: "",
-                    project_type_id: "",
-                });
-                
-        
-                onSuccess();
-            } else {
-          
-                setError(data.error || "Erreur lors de la création du projet");
-            }
-        } catch (error) {
-
-            console.error("Erreur réseau :", error);
-            setError("Erreur de connexion. Veuillez réessayer.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
     return (
         <>
             <h1 className="text-center text-2xl font-bold mb-4">Proposer un projet</h1>
@@ -72,7 +32,7 @@ export default function Form({ promo, type, onSuccess }: Props) {
                 </div>
             )}
 
-            <form onSubmit={FormAction} className="flex flex-col gap-3">
+            <form onSubmit={(e) => FormAction({e, setIsSubmitting, setError, setNewProjectType, newProjectType, onSuccess})} className="flex flex-col gap-3">
 
                 <label htmlFor="title" className="font-bold">Titre</label>
                 <input
