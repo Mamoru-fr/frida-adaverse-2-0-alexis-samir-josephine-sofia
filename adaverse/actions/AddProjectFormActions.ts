@@ -5,12 +5,12 @@ interface FormActionProps {
     e: FormEvent<HTMLFormElement>;
     setIsSubmitting: (isSubmitting: boolean) => void;
     setError: (error: string | null) => void;
-    setNewProjectType: (projectType: Projects) => void;
-    newProjectType: Projects;
+    setNewadaProjects: (adaProjects: Projects) => void;
+    newadaProjects: Projects;
     onSuccess: () => void;
 }
 
-export const FormAction = async ({e, setIsSubmitting, setError, setNewProjectType, newProjectType, onSuccess}: FormActionProps) => {
+export const FormAction = async ({e, setIsSubmitting, setError, setNewadaProjects, newadaProjects, onSuccess}: FormActionProps) => {
         e.preventDefault();
         setIsSubmitting(true);
         setError(null);
@@ -21,7 +21,7 @@ export const FormAction = async ({e, setIsSubmitting, setError, setNewProjectTyp
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(newProjectType),
+                body: JSON.stringify(newadaProjects),
             });
 
             const data = await response.json();
@@ -29,12 +29,12 @@ export const FormAction = async ({e, setIsSubmitting, setError, setNewProjectTyp
             if (response.ok) {
                 console.log("Projet créé avec succès :", data);
                 
-                setNewProjectType({
+                setNewadaProjects({
                     title: "",
                     github_url: "",
                     demo_url: "",
                     promotion_id: "",
-                    project_type_id: "",
+                    ada_projects_id: "",
                 });
                 onSuccess();
             } else {

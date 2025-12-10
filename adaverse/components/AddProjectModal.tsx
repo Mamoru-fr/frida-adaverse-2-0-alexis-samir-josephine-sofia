@@ -1,22 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { Promotions, ProjectTypes } from "@/content/interface";
-import { FormAction } from "@/actions/actions";
+import { Promotions, adaProjects } from "@/content/interface";
+import { FormAction } from "@/actions/AddProjectFormActions";
 
 type Props = {
     promo: Array<Promotions>;
-    type: Array<ProjectTypes>;
+    type: Array<adaProjects>;
     onSuccess: () => void; 
 };
 
 export default function AddProjectModal({ promo, type, onSuccess }: Props) {
-    const [newProjectType, setNewProjectType] = useState({
+    const [newadaProjects, setNewadaProjects] = useState({
         title: "",
         github_url: "",
         demo_url: "",
         promotion_id: "",
-        project_type_id: "",
+        ada_projects_id: "",
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +32,7 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                 </div>
             )}
 
-            <form onSubmit={(e) => FormAction({e, setIsSubmitting, setError, setNewProjectType, newProjectType, onSuccess})} className="flex flex-col gap-3">
+            <form onSubmit={(e) => FormAction({e, setIsSubmitting, setError, setNewadaProjects, newadaProjects, onSuccess})} className="flex flex-col gap-3">
 
                 <label htmlFor="title" className="font-bold">Titre</label>
                 <input
@@ -40,10 +40,10 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
                     type="text"
                     placeholder="Ex: Mon super projet"
-                    value={newProjectType.title}
+                    value={newadaProjects.title}
                     onChange={(e) =>
-                        setNewProjectType({
-                            ...newProjectType,
+                        setNewadaProjects({
+                            ...newadaProjects,
                             title: e.target.value,
                         })
                     }
@@ -57,10 +57,10 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
                     type="url"
                     placeholder="https://github.com/username/repo"
-                    value={newProjectType.github_url}
+                    value={newadaProjects.github_url}
                     onChange={(e) =>
-                        setNewProjectType({
-                            ...newProjectType,
+                        setNewadaProjects({
+                            ...newadaProjects,
                             github_url: e.target.value,
                         })
                     }
@@ -74,10 +74,10 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
                     type="url"
                     placeholder="https://monprojet.vercel.app"
-                    value={newProjectType.demo_url}
+                    value={newadaProjects.demo_url}
                     onChange={(e) =>
-                        setNewProjectType({
-                            ...newProjectType,
+                        setNewadaProjects({
+                            ...newadaProjects,
                             demo_url: e.target.value,
                         })
                     }
@@ -89,10 +89,10 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                 <select
                     id="promotion_id"
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
-                    value={newProjectType.promotion_id}
+                    value={newadaProjects.promotion_id}
                     onChange={(e) =>
-                        setNewProjectType({
-                            ...newProjectType,
+                        setNewadaProjects({
+                            ...newadaProjects,
                             promotion_id: e.target.value,
                         })
                     }
@@ -107,24 +107,24 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                     ))}
                 </select>
 
-                <label htmlFor="project_type_id" className="font-bold">Type de projet</label>
+                <label htmlFor="ada_projects_id" className="font-bold">Type de projet</label>
                 <select
-                    id="project_type_id"
+                    id="ada_projects_id"
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
-                    value={newProjectType.project_type_id}
+                    value={newadaProjects.ada_projects_id}
                     onChange={(e) =>
-                        setNewProjectType({
-                            ...newProjectType,
-                            project_type_id: e.target.value,
+                        setNewadaProjects({
+                            ...newadaProjects,
+                            ada_projects_id: e.target.value,
                         })
                     }
                     required
                     disabled={isSubmitting}
                 >
                     <option value="">-- Choisir un type --</option>
-                    {type.map((projectType) => (
-                        <option key={projectType.id} value={projectType.id}>
-                            {projectType.name}
+                    {type.map((adaProjects) => (
+                        <option key={adaProjects.id} value={adaProjects.id}>
+                            {adaProjects.name}
                         </option>
                     ))}
                 </select>

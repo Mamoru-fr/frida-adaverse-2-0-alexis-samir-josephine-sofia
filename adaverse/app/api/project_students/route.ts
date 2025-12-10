@@ -1,5 +1,5 @@
 import db  from "@/lib/db/index";
-import { studentProjects, promotions, projectsTypes } from "@/lib/db/schema";
+import { studentProjects, promotions, adaProjects } from "@/lib/db/schema";
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 
@@ -26,13 +26,13 @@ export async function GET(request: Request) {
         createdAt: studentProjects.createdAt,
         publishedAt: studentProjects.publishedAt,
         promotionId: studentProjects.promotionId,
-        projectTypeId: studentProjects.projectTypeId,
+        adaProjectsId: studentProjects.adaProjectsId,
         promotionName: promotions.name,
-        projectTypeName: projectsTypes.name,
+        adaProjectsName: adaProjects.name,
       })
       .from(studentProjects)
       .leftJoin(promotions, eq(studentProjects.promotionId, promotions.id))
-      .leftJoin(projectsTypes, eq(studentProjects.projectTypeId, projectsTypes.id));
+      .leftJoin(adaProjects, eq(studentProjects.adaProjectsId, adaProjects.id));
 
     return NextResponse.json(data);
   } catch (error) {
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    if (!body.title || !body.github_url || !body.demo_url || !body.promotion_id || !body.project_type_id) {
+    if (!body.title || !body.github_url || !body.demo_url || !body.promotion_id || !body.ada_projects_id) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
         githubUrl: body.githubUrl ?? body.github_url, 
         demoUrl: body.demoUrl ?? body.demo_url,
         promotionId: Number(body.promotionId ?? body.promotion_id),
-        projectTypeId: Number(body.projectTypeId ?? body.project_type_id),
+        adaProjectsId: Number(body.adaProjectsId ?? body.ada_projects_id),
       })
       .returning();
 

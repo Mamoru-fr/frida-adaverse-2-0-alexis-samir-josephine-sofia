@@ -56,7 +56,7 @@ export default function ProjectsCards({ form, onProjectDeleted }: CardsProps) {
 
                                 <div className='flex flex-col items-center text-center mb-4'>
                                     <p className='text-gray-300 text-sm mb-1'>
-                                        {item.projectTypeName}
+                                        {item.adaProjectsName}
                                     </p>
                                     {item.createdAt && (
                                         <p className='text-gray-400 text-xs'>

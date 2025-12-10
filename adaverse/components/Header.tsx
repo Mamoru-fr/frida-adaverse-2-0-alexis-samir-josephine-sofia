@@ -23,9 +23,9 @@ export default function Header({ openModal, data, onFilterChange, selectedFilter
                 className="p-2 cursor-pointer text-white bg-black rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-700"
             >
                 <option value="">TOUS LES PROJETS</option>
-                {data.map((projectType: { id: number; name: string }) => (
-                    <option key={projectType.id} value={projectType.id}>
-                        {projectType.name.toUpperCase()}
+                {data.map((adaProjects: { id: number; name: string }) => (
+                    <option key={adaProjects.id} value={adaProjects.id}>
+                        {adaProjects.name.toUpperCase()}
                     </option>
                 ))}
             </select>

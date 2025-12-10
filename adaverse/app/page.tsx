@@ -3,12 +3,12 @@
 import {useState, useEffect} from "react";
 import Header from "../components/Header";
 import ProjectsCards from "../components/ProjectsCards";
-import {ProjectTypes, Promotions} from "../content/interface";
+import {adaProjects, Promotions} from "../content/interface";
 import AddProjectButton from "../components/AddProjectButton";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [getTypes, setGetTypes] = useState<ProjectTypes[]>([]);
+  const [getTypes, setGetTypes] = useState<adaProjects[]>([]);
   const [getPromotions, setGetPromotions] = useState<Promotions[]>([]);
   const [getFormData, setGetFormData] = useState<any>([]);
   const [filteredProjects, setFilteredProjects] = useState<any>([]);
@@ -30,7 +30,7 @@ export default function Home() {
   };
 
   async function fetchDataType() {
-    const res = await fetch("/api/project_types");
+    const res = await fetch("/api/ada_projects");
     const result = await res.json();
     setGetTypes(result);
   }
@@ -54,7 +54,7 @@ export default function Home() {
       setFilteredProjects(getFormData);
     } else {
       const filtered = getFormData.filter(
-        (project: any) => project.projectTypeId === Number(typeId)
+        (project: any) => project.adaProjectsId === Number(typeId)
       );
       setFilteredProjects(filtered);
     }

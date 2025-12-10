@@ -1,4 +1,4 @@
-export interface ProjectTypes {
+export interface adaProjects {
   id: number;
   name: string;
 }
@@ -14,5 +14,5 @@ export interface Projects {
   github_url: string;
   demo_url: string;
   promotion_id: string;
-  project_type_id: string;
+  ada_projects_id: string;
 }
