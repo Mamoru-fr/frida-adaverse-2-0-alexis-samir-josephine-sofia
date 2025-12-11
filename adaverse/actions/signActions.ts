@@ -8,9 +8,15 @@ export const signup = async (formData: FormData) => {
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    if (!name && !email && !password) {
-        throw Error("Name, email and password are required");
+    const confirmPassword = formData.get("confirmPassword") as string;
+    if (!name && !email && !password && !confirmPassword) {
+        throw Error("Name, email, password and confirm password are required");
     }
+
+    if (password !== confirmPassword) {
+        throw Error("Passwords do not match");
+    }
+    
     const response = await auth.api.signUpEmail({
         body: {
             name,

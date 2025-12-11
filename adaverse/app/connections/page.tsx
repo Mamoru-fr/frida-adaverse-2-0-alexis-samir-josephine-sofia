@@ -1,13 +1,19 @@
 import {auth} from "@/lib/auth/auth";
-import HomePage from "@/page/HomePage";
 import {headers} from "next/headers";
+import SignPage from "@/page/SignPage";
+import {redirect} from "next/navigation";
 
-export default async function Home() {
+
+export default async function Connections() {
   const session = await auth.api.getSession({headers: await headers()});
+
+  // if (session) {
+  //   redirect("/");
+  // }
   return (
     <>
       {/* <pre>{session ? JSON.stringify(session.user, null, 2) : "Not connected"}</pre> */}
-      <HomePage />
+      <SignPage session={session} />
     </>
   )
 }

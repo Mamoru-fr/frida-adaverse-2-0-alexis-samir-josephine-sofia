@@ -49,7 +49,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    if (!body.title || !body.github_url || !body.demo_url || !body.promotion_id || !body.ada_projects_id) {
+    if (!body.title || !body.github_url || !body.demo_url || !body.promotion_id || !body.ada_projects_id || !body.user_id) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -59,16 +59,19 @@ export async function POST(request: Request) {
     const baseSlug = generateSlug(body.title);
     const slug = `${baseSlug}-${Date.now()}`;
 
+    const insertData = {
+      title: body.title,
+      slug: slug,
+      githubUrl: body.github_url,
+      demoUrl: body.demo_url,
+      promotionId: Number(body.promotion_id),
+      adaProjectsId: Number(body.ada_projects_id),
+      userId: body.user_id,
+    };
+
     const result = await db
       .insert(studentProjects)
-      .values({
-        title: body.title,
-        slug: slug,
-        githubUrl: body.githubUrl ?? body.github_url, 
-        demoUrl: body.demoUrl ?? body.demo_url,
-        promotionId: Number(body.promotionId ?? body.promotion_id),
-        adaProjectsId: Number(body.adaProjectsId ?? body.ada_projects_id),
-      })
+      .values(insertData)
       .returning();
 
     return NextResponse.json(result[0], { status: 201 });

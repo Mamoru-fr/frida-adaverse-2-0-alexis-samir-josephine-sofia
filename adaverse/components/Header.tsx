@@ -10,7 +10,7 @@ interface HeaderProps {
 export default function Header({ openModal, data, onFilterChange, selectedFilter }: HeaderProps) {
 
     return (
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center bg-gray-500 p-3 rounded-xl shadow-md">
             <h1 className="font-bold text-[#f3d5d5] text-2xl">
                 ada<span>VERSE</span>
             </h1>
