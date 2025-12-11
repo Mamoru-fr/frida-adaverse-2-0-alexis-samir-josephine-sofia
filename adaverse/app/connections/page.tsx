@@ -10,6 +10,7 @@ export default async function Connections() {
   // if (session) {
   //   redirect("/");
   // }
+  
   return (
     <>
       {/* <pre>{session ? JSON.stringify(session.user, null, 2) : "Not connected"}</pre> */}

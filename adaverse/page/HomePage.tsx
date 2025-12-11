@@ -6,7 +6,7 @@ import ProjectsCards from "../components/ProjectsCards";
 import {adaProjects, Promotions} from "../content/interface";
 import AddProjectButton from "../components/AddProjectButton";
 
-export default function HomePage() {
+export default function HomePage({ session }: { session: any }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [getAdaProjects, setGetAdaProjects] = useState<adaProjects[]>([]);
   const [getPromotions, setGetPromotions] = useState<Promotions[]>([]);
@@ -74,6 +74,7 @@ export default function HomePage() {
           openModal={() => setIsModalOpen(true)}
           onFilterChange={handleFilterChange}
           selectedFilter={selectedFilter}
+          session={session}
         />
       </div>
 

@@ -7,7 +7,7 @@ export default async function Home() {
   return (
     <>
       {/* <pre>{session ? JSON.stringify(session.user, null, 2) : "Not connected"}</pre> */}
-      <HomePage />
+      <HomePage session={session}/>
     </>
   )
 }

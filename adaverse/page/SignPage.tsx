@@ -87,6 +87,7 @@ export default function SignPage({session}: Props) {
                     openModal={() => setIsModalOpen(true)}
                     onFilterChange={handleFilterChange}
                     selectedFilter={selectedFilter}
+                    session={session}
                 />
             </div>
 
