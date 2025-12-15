@@ -16,10 +16,10 @@ export default function ProjectsCards({ form, onProjectDeleted }: CardsProps) {
         <>
             <h1>Tous les projets ({form.length})</h1>
             <div className='flex flex-wrap gap-4'>
-                {form.length === 0 ? (
+                {Array.isArray(form) && form.length === 0 ? (
                     <p className='text-gray-400'>Aucun projet pour le moment.</p>
                 ) : (
-                    form.map((item) => (
+                    Array.isArray(form) && form.map((item) => (
                         <div key={item.id} className='relative w-[280px] h-80'>
 
                             <div className='absolute inset-0 bg-linear-to-br from-gray-800 to-gray-900 rounded-lg'></div>
