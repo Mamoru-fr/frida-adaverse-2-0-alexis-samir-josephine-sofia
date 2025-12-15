@@ -1,5 +1,3 @@
-"use client"
-
 import AddProjectModal from "@/components/AddProjectModal";
 
 type Props = {
@@ -8,12 +6,12 @@ type Props = {
     getpromo: any;
 };
 
-export default function AddProjectButton({ onClose, gettype, getpromo }: Props) {
+export default function AddProjectButton({onClose, gettype, getpromo}: Props) {
 
     return (
         <div className="modal fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
-            <div 
-                className="overlay w-full h-full bg-[#000000d6] absolute top-0 left-0" 
+            <div
+                className="overlay w-full h-full bg-[#000000d6] absolute top-0 left-0"
                 onClick={onClose}
             ></div>
             <div className="modal-content bg-white p-6 rounded-lg z-10 max-w-lg lg:w-full relative overflow-auto max-h-[90vh] md:w-md sm:w-sm">

@@ -23,19 +23,22 @@ export const studentProjects = pgTable("student_projects", {
     githubUrl: text("github_url").notNull(),
     demoUrl: text("demo_url").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    publishedAt: timestamp("published_at"), // null = non publié
+    publishedAt: timestamp("published_at"), 
     promotionId: integer("promotion_id")
         .references(() => promotions.id, { onDelete: "cascade" })
         .notNull(),
     adaProjectsId: integer("ada_projects_id")
         .references(() => adaProjects.id, { onDelete: "cascade" })
         .notNull(),
+    userId: text("user_id")
+    .references(() => user.id, { onDelete: "cascade" })
+    .notNull(),
 });
 
 export const comments = pgTable("comments", {
     id: serial("id").primaryKey(),
     content: text("content").notNull(),
-    userId: varchar("user_id").notNull(),
+    userId: text("user_id").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     projectId: integer("project_id")
         .references(() => studentProjects.id, { onDelete: "cascade" })

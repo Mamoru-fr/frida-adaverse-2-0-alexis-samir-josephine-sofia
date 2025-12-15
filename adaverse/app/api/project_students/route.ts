@@ -2,16 +2,7 @@ import db  from "@/lib/db/index";
 import { studentProjects, promotions, adaProjects } from "@/lib/db/schema";
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-
-// Fonction pour générer un slug
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+import { GenerateURLName } from "@/utils/GenerateURLName";
 
 // GET - Récupérer tous les projets
 export async function GET(request: Request) {
@@ -49,26 +40,29 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    if (!body.title || !body.github_url || !body.demo_url || !body.promotion_id || !body.ada_projects_id) {
+    if (!body.title || !body.github_url || !body.demo_url || !body.promotion_id || !body.ada_projects_id || !body.user_id) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    const baseSlug = generateSlug(body.title);
+    const baseSlug = GenerateURLName(body.title);
     const slug = `${baseSlug}-${Date.now()}`;
+
+    const insertData = {
+      title: body.title,
+      slug: slug,
+      githubUrl: body.github_url,
+      demoUrl: body.demo_url,
+      promotionId: Number(body.promotion_id),
+      adaProjectsId: Number(body.ada_projects_id),
+      userId: body.user_id,
+    };
 
     const result = await db
       .insert(studentProjects)
-      .values({
-        title: body.title,
-        slug: slug,
-        githubUrl: body.githubUrl ?? body.github_url, 
-        demoUrl: body.demoUrl ?? body.demo_url,
-        promotionId: Number(body.promotionId ?? body.promotion_id),
-        adaProjectsId: Number(body.adaProjectsId ?? body.ada_projects_id),
-      })
+      .values(insertData)
       .returning();
 
     return NextResponse.json(result[0], { status: 201 });

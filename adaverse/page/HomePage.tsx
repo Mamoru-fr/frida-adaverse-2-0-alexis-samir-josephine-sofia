@@ -6,9 +6,9 @@ import ProjectsCards from "../components/ProjectsCards";
 import {adaProjects, Promotions} from "../content/interface";
 import AddProjectButton from "../components/AddProjectButton";
 
-export default function HomePage() {
+export default function HomePage({ session }: { session: any }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [getTypes, setGetTypes] = useState<adaProjects[]>([]);
+  const [getAdaProjects, setGetAdaProjects] = useState<adaProjects[]>([]);
   const [getPromotions, setGetPromotions] = useState<Promotions[]>([]);
   const [getFormData, setGetFormData] = useState<any>([]);
   const [filteredProjects, setFilteredProjects] = useState<any>([]);
@@ -29,10 +29,10 @@ export default function HomePage() {
     }
   };
 
-  async function fetchDataType() {
+  async function fetchDataAdaProjects() {
     const res = await fetch("/api/ada_projects");
     const result = await res.json();
-    setGetTypes(result);
+    setGetAdaProjects(result);
   }
 
   async function fetchDataPromotions() {
@@ -42,7 +42,7 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    fetchDataType();
+    fetchDataAdaProjects();
     fetchDataPromotions();
     fetchProjects();
   }, []);
@@ -70,17 +70,18 @@ export default function HomePage() {
 
       <div className="p-2 m-2 rounded-xl relative z-10">
         <Header
-          data={getTypes}
+          data={getAdaProjects}
           openModal={() => setIsModalOpen(true)}
           onFilterChange={handleFilterChange}
           selectedFilter={selectedFilter}
+          session={session}
         />
       </div>
 
       {isModalOpen && (
         <AddProjectButton
           getpromo={getPromotions}
-          gettype={getTypes}
+          gettype={getAdaProjects}
           onClose={() => {
             setIsModalOpen(false);
             fetchProjects();

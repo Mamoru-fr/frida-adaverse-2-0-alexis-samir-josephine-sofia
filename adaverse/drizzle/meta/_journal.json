@@ -8,6 +8,13 @@
       "when": 1765377166236,
       "tag": "0000_clear_dagger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1765451397588,
+      "tag": "0001_rainy_cable",
+      "breakpoints": true
     }
   ]
 }
