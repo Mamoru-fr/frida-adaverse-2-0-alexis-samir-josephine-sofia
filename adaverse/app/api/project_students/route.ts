@@ -2,16 +2,7 @@ import db  from "@/lib/db/index";
 import { studentProjects, promotions, adaProjects } from "@/lib/db/schema";
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-
-// Fonction pour générer un slug
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+import { GenerateURLName } from "@/utils/GenerateURLName";
 
 // GET - Récupérer tous les projets
 export async function GET(request: Request) {
@@ -56,7 +47,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const baseSlug = generateSlug(body.title);
+    const baseSlug = GenerateURLName(body.title);
     const slug = `${baseSlug}-${Date.now()}`;
 
     const insertData = {
