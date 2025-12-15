@@ -23,8 +23,6 @@ export default function SignPage({session}: Props) {
         setView(view === 'signin' ? 'signup' : 'signin');
     };
 
-
-
     const fetchProjects = async () => {
         setIsLoading(true);
         try {
