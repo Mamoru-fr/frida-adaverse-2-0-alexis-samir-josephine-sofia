@@ -141,7 +141,7 @@ export default function StudentProjectDetail() {
       </div>
 
       {/* Image en haut avec effet de flou */}
-      <div className="relative w-[78vw] h-[50vh] overflow-hidden z-10 mx-auto">
+      <div className="relative w-[78vw] max-w-6xl h-[50vh] overflow-hidden z-10 mx-auto">
         <div className="absolute inset-0 bg-gray-700 rounded-4xl overflow-hidden shadow-lg flex items-center justify-center">
           {thumbnailUrl && !imageError ? (
             <img
@@ -158,7 +158,7 @@ export default function StudentProjectDetail() {
           )}
           {/* Overlay avec gradient flou uniquement en bas */}
           {thumbnailUrl && !imageError && (
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-linear-to-b from-transparent to-gray-900 backdrop-blur-sm"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-linear-to-b rounded-xl from-transparent to-gray-900 backdrop-blur-sm"></div>
           )}
         </div>
       </div>
