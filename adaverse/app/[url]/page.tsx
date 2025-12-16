@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { FormatDate } from '@/utils/FormatDate';
+import {useEffect, useState} from 'react';
+import {useParams, useRouter} from 'next/navigation';
+import {FormatDate} from '@/utils/FormatDate';
 
 // Construit l'URL raw de thumbnail.png à partir du githubUrl
 function getThumbnailUrl(githubUrl: string) {
@@ -11,7 +11,7 @@ function getThumbnailUrl(githubUrl: string) {
   if (!match) return '';
   const user = match[1];
   const repo = match[2];
-  return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
+  return `${githubUrl}/blob/main/thumbnail.png?raw=true`;
 }
 
 // Extrait le nom d'utilisateur GitHub depuis l'URL
@@ -24,13 +24,13 @@ function getGithubUsername(githubUrl: string) {
 export default function StudentProjectDetail() {
   const params = useParams();
   const router = useRouter();
-  const { url } = params as { url?: string };
+  const {url} = params as {url?: string};
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!url) return;
-    
+
     setLoading(true);
     fetch('/api/project_students')
       .then(res => res.json())
@@ -53,6 +53,13 @@ export default function StudentProjectDetail() {
             <h1 className="font-bold text-[#f3d5d5] text-2xl cursor-pointer" onClick={() => router.push('/')}>
               ada<span>VERSE</span>
             </h1>
+            <div className="flex-1"></div>
+            <button
+              onClick={() => router.push('/')}
+              className="p-2 px-4 cursor-pointer bg-amber-700 text-white rounded hover:bg-amber-800 transition font-medium"
+            >
+              RETOUR À L'ACCUEIL
+            </button>
           </div>
         </div>
         <main className="flex-1 p-2 m-2 flex items-center justify-center">
@@ -107,7 +114,7 @@ export default function StudentProjectDetail() {
             {/* Badge promo en haut à droite */}
             <div className="flex justify-between items-start mb-6">
               <div className="flex-1"></div>
-              <span className="bg-gradient-to-r from-red-500 to-blue-600 text-white font-bold text-sm px-6 py-2 rounded-xl shadow-lg border-2 border-blue-600">
+              <span className="bg-linear-to-r from-red-500 to-blue-600 text-white font-bold text-sm px-6 py-2 rounded-xl shadow-lg border-2 border-blue-600">
                 {project.promotionName || 'N/A'}
               </span>
             </div>
@@ -120,12 +127,12 @@ export default function StudentProjectDetail() {
             </div>
 
             {/* Image du projet */}
-            <div className="w-full bg-cyan-50 rounded-2xl mb-6 overflow-hidden flex items-center justify-center" style={{ minHeight: '400px', maxHeight: '500px' }}>
+            <div className="w-full bg-cyan-50 rounded-2xl mb-6 overflow-hidden flex items-center justify-center" style={{minHeight: '400px', maxHeight: '500px'}}>
               <img
                 src={getThumbnailUrl(project.githubUrl) || '/image/no_image_available.png'}
                 alt="Aperçu du projet"
                 className="w-full h-auto max-h-[500px] object-contain"
-                onError={(e) => { e.currentTarget.src = '/image/no_image_available.png'; }}
+                onError={(e) => {e.currentTarget.src = '/image/no_image_available.png';}}
               />
             </div>
 
@@ -147,10 +154,10 @@ export default function StudentProjectDetail() {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 bg-gradient-to-r from-blue-600 to-red-500 hover:from-red-500 hover:to-blue-600 text-white font-bold text-lg px-8 py-3 rounded-xl shadow-lg transition-all duration-200"
+                className="flex items-center gap-3 bg-linear-to-r from-blue-600 to-red-500 hover:from-red-500 hover:to-blue-600 text-white font-bold text-lg px-8 py-3 rounded-xl shadow-lg transition-all duration-200"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
                 </svg>
                 <span>Voir le code</span>
               </a>
@@ -160,7 +167,7 @@ export default function StudentProjectDetail() {
                   href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 bg-gradient-to-r from-emerald-600 to-cyan-500 hover:from-cyan-500 hover:to-emerald-600 text-white font-bold text-lg px-8 py-3 rounded-xl shadow-lg transition-all duration-200"
+                  className="flex items-center gap-3 bg-linear-to-r from-emerald-600 to-cyan-500 hover:from-cyan-500 hover:to-emerald-600 text-white font-bold text-lg px-8 py-3 rounded-xl shadow-lg transition-all duration-200"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />

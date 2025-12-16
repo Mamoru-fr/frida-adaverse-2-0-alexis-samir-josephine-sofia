@@ -3,6 +3,7 @@
 import {redirect} from "next/navigation";
 import {SignInHeaderButton} from "./SignInHeaderButton";
 import {SignOutHeaderButton} from "./SignOutHeaderButton";
+import {useRouter} from "next/navigation";
 
 interface HeaderProps {
     openModal: () => void;
@@ -13,6 +14,7 @@ interface HeaderProps {
 }
 
 export default function Header({openModal, data, onFilterChange, selectedFilter, session}: HeaderProps) {
+    const router = useRouter();
 
     const handleSubmitProject = () => {
         if (!session) {
@@ -24,7 +26,7 @@ export default function Header({openModal, data, onFilterChange, selectedFilter,
 
     return (
         <div className="flex gap-4 items-center bg-gray-500 p-3 rounded-xl shadow-md">
-            <h1 className="font-bold text-[#f3d5d5] text-2xl">
+            <h1 className="font-bold text-[#f3d5d5] text-2xl cursor-pointer" onClick={() => router.push('/')}>
                 ada<span>VERSE</span>
             </h1>
 
