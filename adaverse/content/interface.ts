@@ -10,6 +10,7 @@ export interface Promotions {
 }
 
 export interface Projects {
+  id: number;
   title: string;
   slug: string;
   githubUrl: string;
@@ -19,4 +20,16 @@ export interface Projects {
   promotionId: number;
   adaProjectsId: number;
   userId: string;
+}
+
+export interface Comments {
+  id: number;
+  content: string;
+  createdAt: string;
+  projectId: number;
+  user?: {
+    id: string;
+    name: string;
+    image: string | null;
+  };
 }

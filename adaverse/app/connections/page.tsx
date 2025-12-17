@@ -7,9 +7,9 @@ import {redirect} from "next/navigation";
 export default async function Connections() {
   const session = await auth.api.getSession({headers: await headers()});
 
-  // if (session) {
-  //   redirect("/");
-  // }
+  if (session) {
+    redirect("/");
+  }
   
   return (
     <>
