@@ -41,3 +41,14 @@ export interface CreateProjectInput {
   promotion_id: string;
   ada_projects_id: string;
 }
+
+export interface User  {
+	id: string;
+	name: string;
+	email: string;
+	role: string;
+	banni: string;
+	createdAt: string;
+	updatedAt: string;
+	image?: string;
+};

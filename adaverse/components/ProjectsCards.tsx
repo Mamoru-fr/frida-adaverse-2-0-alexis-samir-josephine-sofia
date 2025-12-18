@@ -9,13 +9,25 @@ import { Folder, Eye, Github } from 'lucide-react';
 interface CardsProps {
     form: any[];
     onProjectDeleted: () => void;
+    session: string | null;
 }
 
-export default function ProjectsCards({ form, onProjectDeleted }: CardsProps) {
+export default function ProjectsCards({ form, onProjectDeleted, session }: CardsProps) {
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null)
 
     return (
         <>
+        {session && (
+            <>
+                <h1>Mes projets ({form.length})</h1>
+                {Array.isArray(form) && form.map((project) => (
+                    <div key={project.id}>
+                        <h2>{project.title}</h2>
+                    </div>
+                ))}
+            </>
+        )}
+        
             <h1>Tous les projets ({form.length})</h1>
             <div className='flex flex-wrap gap-4'>
                 {Array.isArray(form) && form.length === 0 ? (

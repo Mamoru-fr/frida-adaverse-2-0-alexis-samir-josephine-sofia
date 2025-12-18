@@ -96,6 +96,7 @@ export default function HomePage({ session }: { session: any }) {
             <p className="text-gray-400">Chargement des projets...</p>
           ) : (
             <ProjectsCards
+              session={session}
               form={filteredProjects}
               onProjectDeleted={handleProjectDeleted}
             />
