@@ -47,7 +47,7 @@ export interface User  {
 	name: string;
 	email: string;
 	role: string;
-	banni: string;
+	banned: boolean;
 	createdAt: string;
 	updatedAt: string;
 	image?: string;

@@ -75,11 +75,11 @@ export default function SignPage({session}: Props) {
 
     return (
         <div className="min-h-screen flex flex-col relative">
-            <div className="p-2 m-2 rounded-xl relative z-10">
+            <div className="p-1 md:p-2 m-1 md:m-2 rounded-xl relative z-10">
                 {/* <pre className="text-white">{session ? JSON.stringify(session.user, null, 2) : "Not connected"}</pre> */}
             </div>
 
-            <div className="p-2 m-2 rounded-xl relative z-10">
+            <div className="p-1 md:p-2 m-1 md:m-2 rounded-xl relative z-10">
                 <Header
                     data={getTypes}
                     openModal={() => setIsModalOpen(true)}
@@ -101,9 +101,9 @@ export default function SignPage({session}: Props) {
                 />
             )}
 
-            <main className="flex-1 p-2 m-2 relative z-10 flex items-center justify-center min-h-0">
-                <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                    <h1 className="text-2xl font-bold text-center mb-6">
+            <main className="flex-1 p-1 md:p-2 m-1 md:m-2 relative z-10 flex items-center justify-center min-h-0">
+                <div className="bg-white p-4 md:p-8 rounded-lg shadow-md w-full max-w-md mx-2">
+                    <h1 className="text-xl md:text-2xl font-bold text-center mb-4 md:mb-6">
                         {view === 'signin' ? 'Connexion' : 'Inscription'}
                     </h1>
 

@@ -18,6 +18,7 @@ export async function GET(request: Request) {
         publishedAt: studentProjects.publishedAt,
         promotionId: studentProjects.promotionId,
         adaProjectsId: studentProjects.adaProjectsId,
+        userId: studentProjects.userId,
         promotionName: promotions.name,
         adaProjectsName: adaProjects.name,
       })
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    if (!body.title || !body.github_url || !body.demo_url || !body.promotion_id || !body.ada_projects_id || !body.user_id) {
+    if (!body.title || !body.github_url || !body.promotion_id || !body.ada_projects_id || !body.user_id) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }

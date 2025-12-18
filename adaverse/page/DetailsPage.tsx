@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {useParams, useRouter} from 'next/navigation';
 import {FormatDatePlainText} from '@/utils/FormatDate';
 import {adaProjects, Projects, Promotions} from '@/content/interface';
-import {Image} from 'lucide-react';
+import {Github, Image, Palette, PlayCircle, User, Users} from 'lucide-react';
 import {AllComments} from '@/components/Comments/AllComments';
 
 // Construit l'URL raw de thumbnail.png à partir du githubUrl
@@ -124,25 +124,26 @@ export default function DetailsPage({session}: {session: any}) {
     console.log('Thumbnail URL:', thumbnailUrl);
 
     return (
-        <div className="min-h-full flex flex-col relative">
+        <div className="min-h-screen flex flex-col relative">
             {/* Header */}
-            <div className="p-2 m-2 rounded-xl relative z-10">
-                <div className="flex gap-4 items-center bg-gray-500 p-3 rounded-xl shadow-md">
-                    <h1 className="font-bold text-[#f3d5d5] text-2xl cursor-pointer" onClick={() => router.push('/')}>
+            <div className="p-1 md:p-2 m-1 md:m-2 rounded-xl relative z-10">
+                <div className="flex flex-wrap gap-2 md:gap-4 items-center bg-gray-500 p-2 md:p-3 rounded-xl shadow-md">
+                    <h1 className="font-bold text-[#f3d5d5] text-xl md:text-2xl cursor-pointer" onClick={() => router.push('/')}>
                         ada<span>VERSE</span>
                     </h1>
-                    <div className="flex-1"></div>
+                    <div className="flex-1 min-w-0"></div>
                     <button
                         onClick={() => router.push('/')}
-                        className="p-2 px-4 cursor-pointer bg-amber-700 text-white rounded hover:bg-amber-800 transition font-medium"
+                        className="p-2 px-3 md:px-4 cursor-pointer bg-amber-700 text-white rounded hover:bg-amber-800 transition font-medium text-xs md:text-sm whitespace-nowrap"
                     >
-                        RETOUR À L'ACCUEIL
+                        <span className="hidden sm:inline">RETOUR À L'ACCUEIL</span>
+                        <span className="sm:hidden">RETOUR</span>
                     </button>
                 </div>
             </div>
 
             {/* Image en haut avec effet de flou */}
-            <div className="relative w-[78vw] max-w-6xl h-[50vh] overflow-hidden z-10 mx-auto">
+            <div className="relative w-[95vw] md:w-[78vw] max-w-6xl h-[30vh] md:h-[50vh] overflow-hidden z-10 mx-auto">
                 <div className="absolute inset-0 bg-gray-700 rounded-4xl overflow-hidden shadow-lg flex items-center justify-center">
                     {thumbnailUrl && !imageError ? (
                         <img
@@ -165,13 +166,13 @@ export default function DetailsPage({session}: {session: any}) {
             </div>
 
             {/* Contenu principal */}
-            <div className="flex-1 p-2 m-2 relative z-10">
-                <div className="max-w-6xl mx-auto -mt-20">
+            <div className="flex-1 p-1 md:p-2 m-1 md:m-2 relative z-10">
+                <div className="max-w-6xl mx-auto -mt-10 md:-mt-20">
                     {/* Titre et Date de création */}
-                    <div className="bg-gray-500/95 backdrop-blur-md rounded-xl p-6 shadow-md mb-6">
+                    <div className="bg-gray-500/95 backdrop-blur-md rounded-xl p-4 md:p-6 shadow-md mb-4 md:mb-6">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                             <div>
-                                <h1 className="text-[#f3d5d5] text-3xl md:text-4xl font-bold mb-2">
+                                <h1 className="text-[#f3d5d5] text-2xl md:text-3xl lg:text-4xl font-bold mb-2">
                                     {project.title}
                                 </h1>
                                 <div className="flex items-center gap-3">
@@ -184,15 +185,13 @@ export default function DetailsPage({session}: {session: any}) {
                     </div>
 
                     {/* Cartes d'informations en flex */}
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-3 md:gap-4">
                         {/* Première ligne - 3 cartes */}
-                        <div className="flex flex-wrap gap-4">
+                        <div className="flex flex-wrap gap-3 md:gap-4">
                             {/* Carte Promotion */}
-                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[250px]">
+                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-4 md:p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[200px] md:min-w-[250px]">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                    </svg>
+                                    <Users className="w-7 h-7 text-white" />
                                     <h3 className="text-lg font-bold text-white">Promotion</h3>
                                 </div>
                                 <p className="text-gray-200 mb-3 text-sm">Promotion ada</p>
@@ -202,11 +201,9 @@ export default function DetailsPage({session}: {session: any}) {
                             </div>
 
                             {/* Carte Auteur */}
-                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[250px]">
+                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-4 md:p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[200px] md:min-w-[250px]">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
+                                    <User className="w-7 h-7 text-white" />
                                     <h3 className="text-lg font-bold text-white">Auteur</h3>
                                 </div>
                                 <p className="text-gray-200 mb-3 text-sm">Développeur</p>
@@ -216,11 +213,9 @@ export default function DetailsPage({session}: {session: any}) {
                             </div>
 
                             {/* Carte Projet Ada */}
-                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[250px]">
+                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-4 md:p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[200px] md:min-w-[250px]">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                                    </svg>
+                                    <Palette className="w-7 h-7 text-white" />
                                     <h3 className="text-lg font-bold text-white">Type</h3>
                                 </div>
                                 <p className="text-gray-200 mb-3 text-sm">Catégorie</p>
@@ -231,13 +226,11 @@ export default function DetailsPage({session}: {session: any}) {
                         </div>
 
                         {/* Deuxième ligne - 2 cartes */}
-                        <div className="flex flex-wrap gap-4">
+                        <div className="flex flex-wrap gap-3 md:gap-4">
                             {/* Carte GitHub */}
-                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[250px]">
+                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-4 md:p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[200px] md:min-w-[250px]">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                                    </svg>
+                                    <Github className="w-7 h-7 text-white" />
                                     <h3 className="text-lg font-bold text-white">Code Source</h3>
                                 </div>
                                 <p className="text-gray-200 mb-3 text-sm">Repository GitHub</p>
@@ -252,12 +245,9 @@ export default function DetailsPage({session}: {session: any}) {
                             </div>
 
                             {/* Carte Démo */}
-                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[250px]">
+                            <div className="bg-gray-500/90 backdrop-blur-sm rounded-xl p-4 md:p-5 shadow-md hover:bg-gray-500 transition-all flex-1 min-w-[200px] md:min-w-[250px]">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+                                    <PlayCircle className="w-7 h-7 text-white" />
                                     <h3 className="text-lg font-bold text-white">Démonstration</h3>
                                 </div>
                                 <p className="text-gray-200 mb-3 text-sm">
