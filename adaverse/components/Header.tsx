@@ -4,7 +4,7 @@ import {redirect} from "next/navigation";
 import {SignInHeaderButton} from "./SignInHeaderButton";
 import {SignOutHeaderButton} from "./SignOutHeaderButton";
 import {useRouter} from "next/navigation";
-import {Folder, User} from "lucide-react";
+import {Folder, User, ShieldCheck} from "lucide-react";
 
 interface HeaderProps {
     openModal: () => void;
@@ -66,6 +66,16 @@ export default function Header({openModal, data, onFilterChange, selectedFilter,
             >
                 <Folder className="text-white w-5 h-5 md:w-6 md:h-6" />
             </button>
+
+            {session?.user?.role === 'admin' && (
+                <button
+                    className="p-2 cursor-pointer bg-purple-700 hover:bg-purple-800 rounded-full transition flex items-center justify-center"
+                    onClick={() => router.push('/admin')}
+                    title="Admin Panel"
+                >
+                    <ShieldCheck className="text-white w-5 h-5 md:w-6 md:h-6" />
+                </button>
+            )}
 
             <button
                 className="p-2 cursor-pointer bg-white rounded-full transition flex items-center justify-center"

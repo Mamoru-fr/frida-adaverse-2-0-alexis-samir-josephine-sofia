@@ -17,22 +17,8 @@ export default function RootLayout({
       <body
         className="antialiased"
       >
-        <div className="min-h-[95vh] flex flex-col relative">
-          <div className="fixed inset-0 -z-10 overflow-hidden">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute min-w-full min-h-full object-cover"
-            >
-              <source src="/videos/background.mp4" type="video/mp4" />
-            </video>
-
-            <div className="absolute inset-0 bg-black/60"></div>
-          </div>
+        <div className="min-h-[95vh] flex flex-col relative bg-black/60">
           {children}
-
         </div>
         <Footer />
       </body>
