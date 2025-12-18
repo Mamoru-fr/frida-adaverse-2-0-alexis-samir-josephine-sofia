@@ -4,6 +4,6 @@ export function SignInHeaderButton() {
     return (
         <button
             onClick={() => redirect('/connections')}
-        >Sign In</button>
+        >Se Connecter</button>
     );
 }

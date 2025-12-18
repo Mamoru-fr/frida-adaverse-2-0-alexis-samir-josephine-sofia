@@ -10,7 +10,7 @@ export function SignOutHeaderButton() {
                 window.location.reload();
             }}
         >
-            Sign Out
+            Se Déconnecter
         </button>
     )
 }

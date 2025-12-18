@@ -57,7 +57,7 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                 setIsSubmitting(false);
             }} className="flex flex-col gap-3">
 
-                <label htmlFor="title" className="font-bold">Titre</label>
+                <label htmlFor="title" className="font-bold">Titre *</label>
                 <input
                     id="title"
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
@@ -74,7 +74,7 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                     disabled={isSubmitting}
                 />
 
-                <label htmlFor="github_url" className="font-bold">URL Github</label>
+                <label htmlFor="github_url" className="font-bold">URL Github *</label>
                 <input
                     id="github_url"
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
@@ -104,11 +104,10 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                             demo_url: e.target.value,
                         })
                     }
-                    required
                     disabled={isSubmitting}
                 />
 
-                <label htmlFor="promotion_id" className="font-bold">Promo ADA</label>
+                <label htmlFor="promotion_id" className="font-bold">Promo ADA *</label>
                 <select
                     id="promotion_id"
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
@@ -130,7 +129,7 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                     ))}
                 </select>
 
-                <label htmlFor="ada_projects_id" className="font-bold">Type de projet</label>
+                <label htmlFor="ada_projects_id" className="font-bold">Type de projet *</label>
                 <select
                     id="ada_projects_id"
                     className="border-2 p-2 rounded focus:outline-none focus:border-amber-700"
