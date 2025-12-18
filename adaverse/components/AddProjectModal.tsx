@@ -17,7 +17,6 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
         demo_url: "",
         promotion_id: "",
         ada_projects_id: "",
-        user_id: "",
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,7 +46,6 @@ export default function AddProjectModal({ promo, type, onSuccess }: Props) {
                         demo_url: "",
                         promotion_id: "",
                         ada_projects_id: "",
-                        user_id: "",
                     });
                     onSuccess();
                 } else {

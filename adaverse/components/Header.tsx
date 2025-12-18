@@ -32,13 +32,6 @@ export default function Header({openModal, data, onFilterChange, selectedFilter,
 
             <div className="flex-1"></div>
 
-            {session ? (
-                <SignOutHeaderButton />
-            ) : (
-                <SignInHeaderButton />
-            )}
-
-
             <select
                 value={selectedFilter}
                 onChange={(e) => onFilterChange(e.target.value)}
@@ -51,6 +44,12 @@ export default function Header({openModal, data, onFilterChange, selectedFilter,
                     </option>
                 ))}
             </select>
+
+            {session ? (
+                <SignOutHeaderButton />
+            ) : (
+                <SignInHeaderButton />
+            )}
 
             <button
                 className="p-2 px-4 cursor-pointer bg-amber-700 text-white rounded hover:bg-amber-800 transition font-medium"

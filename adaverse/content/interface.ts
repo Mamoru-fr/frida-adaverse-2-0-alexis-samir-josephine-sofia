@@ -33,3 +33,11 @@ export interface Comments {
     image: string | null;
   };
 }
+
+export interface CreateProjectInput {
+  title: string;
+  github_url: string;
+  demo_url: string;
+  promotion_id: string;
+  ada_projects_id: string;
+}

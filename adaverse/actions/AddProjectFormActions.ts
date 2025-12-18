@@ -1,5 +1,5 @@
 'use server';
-import {Projects} from "@/content/interface";
+import {CreateProjectInput} from "@/content/interface";
 import {auth} from "@/lib/auth/auth";
 import {headers} from "next/headers";
 
@@ -9,7 +9,7 @@ interface FormActionResult {
     data?: any;
 }
 
-export const FormAction = async (newProjects: Projects): Promise<FormActionResult> => {
+export const FormAction = async (newProjects: CreateProjectInput): Promise<FormActionResult> => {
     try {
         const session = await auth.api.getSession({headers: await headers()});
 
