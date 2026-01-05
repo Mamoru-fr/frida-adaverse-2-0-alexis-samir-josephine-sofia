@@ -11,35 +11,27 @@ export default function HomePage({session}: {session: any}) {
   const [getAdaProjects, setGetAdaProjects] = useState<adaProjects[]>([]);
   const [getPromotions, setGetPromotions] = useState<Promotions[]>([]);
   const [getFormData, setGetFormData] = useState<Projects[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<any>([]);
+  const [filteredProjects, setFilteredProjects] = useState<Projects[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchProjects = async () => {
-    setIsLoading(true);
+  const fetchData = async (endpoint: string, setter: (data: any) => void, isProjectsFetch = false) => {
+    if (isProjectsFetch) setIsLoading(true);
     try {
-      const res = await fetch("/api/project_students");
+      const res = await fetch(endpoint);
       const result = await res.json();
-      setGetFormData(result);
-      setFilteredProjects(result);
+      setter(result);
+      if (isProjectsFetch) setFilteredProjects(result);
     } catch (error) {
-      console.error("Erreur lors de la récupération des projets :", error);
+      console.error(`Erreur lors de la récupération depuis ${endpoint}:`, error);
     } finally {
-      setIsLoading(false);
+      if (isProjectsFetch) setIsLoading(false);
     }
   };
 
-  async function fetchDataAdaProjects() {
-    const res = await fetch("/api/ada_projects");
-    const result = await res.json();
-    setGetAdaProjects(result);
-  }
-
-  async function fetchDataPromotions() {
-    const res = await fetch("/api/promotions");
-    const result = await res.json();
-    setGetPromotions(result);
-  }
+  const fetchDataAdaProjects = () => fetchData("/api/ada_projects", setGetAdaProjects);
+  const fetchDataPromotions = () => fetchData("/api/promotions", setGetPromotions);
+  const fetchProjects = () => fetchData("/api/project_students", setGetFormData, true);
 
   useEffect(() => {
     fetchDataAdaProjects();
@@ -54,21 +46,47 @@ export default function HomePage({session}: {session: any}) {
       setFilteredProjects(getFormData);
     } else {
       const filtered = getFormData.filter(
-        (project: any) => project.adaProjectsId === Number(typeId)
+        (project: Projects) => project.adaProjectsId === Number(typeId)
       );
       setFilteredProjects(filtered);
     }
   };
 
   const sessionProjects = session && getFormData.filter((project: Projects) => project.userId === session.user.id);
-  console.log("Session Projects:", sessionProjects);
-
-
 
   const handleProjectDeleted = () => {
     fetchProjects();
     setSelectedFilter("");
   };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    fetchProjects();
+    setSelectedFilter("");
+  };
+
+  const renderProjectsList = (projects: Projects[], title: string, titleStyle: string) => {
+    if (!Array.isArray(projects) || projects.length === 0) return null;
+    
+    return (
+      <>
+        <h1 className={`${titleStyle}`}>{title} ({projects.length})</h1>
+        <div className='flex flex-wrap gap-2 md:gap-4'>
+          {projects.map((project) => (
+            <ProjectsCards
+              key={project.id}
+              session={session}
+              item={project}
+              onProjectDeleted={handleProjectDeleted}
+            />
+          ))}
+        </div>
+      </>
+    );
+  };
+
+  const getProjectsByAdaType = (adaProjectId: number) => 
+    filteredProjects.filter((project: Projects) => project.adaProjectsId === adaProjectId);
 
   return (
     <div className="min-h-screen flex flex-col relative">
@@ -87,11 +105,7 @@ export default function HomePage({session}: {session: any}) {
         <AddProjectButton
           getpromo={getPromotions}
           gettype={getAdaProjects}
-          onClose={() => {
-            setIsModalOpen(false);
-            fetchProjects();
-            setSelectedFilter("");
-          }}
+          onClose={handleModalClose}
         />
       )}
 
@@ -101,45 +115,24 @@ export default function HomePage({session}: {session: any}) {
             <p className="text-gray-400 text-base md:text-lg">Chargement des projets...</p>
           ) : (
             <div>
-              {session && (
-                <>
-                  <h1 className="text-xl md:text-2xl">Mes projets ({sessionProjects.length})</h1>
-                  <div className='flex flex-wrap gap-2 md:gap-4'>
-                    {Array.isArray(sessionProjects) && sessionProjects.map((project) => (
-                      <ProjectsCards
-                        session={session}
-                        item={project}
-                        onProjectDeleted={handleProjectDeleted}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
+              {session && renderProjectsList(sessionProjects, "Mes projets", "text-xl md:text-2xl mt-4")}
+              
               <h1 className="text-xl md:text-2xl mt-4">Tous les projets ({filteredProjects.length})</h1>
 
               <div className='flex flex-wrap gap-2 md:gap-4'>
-                {Array.isArray(filteredProjects) && filteredProjects.length === 0 ? (
+                {filteredProjects.length === 0 ? (
                   <p className='text-gray-400 text-base md:text-lg'>Aucun projet pour le moment.</p>
                 ) : (
-                  Array.isArray(getAdaProjects) && getAdaProjects.map((adaProject) => (
-                    <div key={adaProject.id} className="w-full">
-                      { filteredProjects.filter((project: Projects) => project.adaProjectsId === adaProject.id).length === 0 ? null : (
-                      <h2 className="text-lg md:text-xl w-full mt-2 mb-1">{adaProject.name} ({filteredProjects.filter((project: Projects) => project.adaProjectsId === adaProject.id).length})</h2>
-                      )}
-                      <div className='flex flex-wrap gap-2 md:gap-4'>
-                        {Array.isArray(filteredProjects) && filteredProjects
-                          .filter((project: Projects) => project.adaProjectsId === adaProject.id)
-                          .map((item) => (
-                            <ProjectsCards
-                              key={item.id}
-                              session={session}
-                              item={item}
-                              onProjectDeleted={handleProjectDeleted}
-                            />
-                          ))}
+                  getAdaProjects.map((adaProject) => {
+                    const projectsByType = getProjectsByAdaType(adaProject.id);
+                    if (projectsByType.length === 0) return null;
+                    
+                    return (
+                      <div key={adaProject.id} className="w-full">
+                        {renderProjectsList(projectsByType, adaProject.name, "text-lg md:text-xl w-full mt-2 mb-1")}
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
             </div>
