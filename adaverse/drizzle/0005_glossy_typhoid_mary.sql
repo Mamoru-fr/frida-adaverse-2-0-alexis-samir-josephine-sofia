@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "banni" text DEFAULT 'false' NOT NULL;

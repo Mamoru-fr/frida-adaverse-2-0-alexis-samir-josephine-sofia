@@ -1,0 +1,1 @@
+ALTER TABLE "user" ALTER COLUMN "banni" SET DATA TYPE boolean;
