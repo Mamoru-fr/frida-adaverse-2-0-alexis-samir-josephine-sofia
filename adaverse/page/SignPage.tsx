@@ -1,16 +1,20 @@
 'use client';
 import {useEffect, useState} from "react";
+import {useSearchParams} from "next/navigation";
 import {signin, signup} from "@/actions/signActions";
 import Header from "@/components/Header";
 import {adaProjects, Projects, Promotions} from "@/content/interface";
 import AddProjectButton from "@/components/AddProjectButton";
+import {ErrorMessage} from "@/components/ErrorMessage";
 
 interface Props {
     session: any;
 }
 
 export default function SignPage({session}: Props) {
-    const [view, setView] = useState<"signin" | "signup">("signin");
+    const searchParams = useSearchParams();
+    const viewParam = searchParams.get('view') as "signin" | "signup" | null;
+    const [view, setView] = useState<"signin" | "signup">(viewParam || "signin");
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [getTypes, setGetTypes] = useState<adaProjects[]>([]);
     const [getPromotions, setGetPromotions] = useState<Promotions[]>([]);
@@ -18,6 +22,7 @@ export default function SignPage({session}: Props) {
     const [filteredProjects, setFilteredProjects] = useState<Projects[]>([]);
     const [selectedFilter, setSelectedFilter] = useState<string>("");
     const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const toggleView = () => {
         setView(view === 'signin' ? 'signup' : 'signin');
@@ -46,6 +51,21 @@ export default function SignPage({session}: Props) {
         fetchDataPromotions();
         fetchProjects();
     }, []);
+
+    useEffect(() => {
+        const error = searchParams.get('error');
+        const viewParam = searchParams.get('view') as "signin" | "signup" | null;
+        
+        if (viewParam) {
+            setView(viewParam);
+        }
+        
+        if (error && error !== 'true') {
+            setErrorMessage(decodeURIComponent(error));
+        } else {
+            setErrorMessage(null);
+        }
+    }, [searchParams]);
 
     const handleFilterChange = (typeId: string) => {
         setSelectedFilter(typeId);
@@ -109,6 +129,13 @@ export default function SignPage({session}: Props) {
                     <h1 className="text-xl md:text-2xl font-bold text-center mb-4 md:mb-6">
                         {view === 'signin' ? 'Connexion' : 'Inscription'}
                     </h1>
+
+                    {errorMessage && (
+                        <ErrorMessage 
+                            message={errorMessage} 
+                            onClose={() => setErrorMessage(null)}
+                        />
+                    )}
 
                     {/* Formulaire de connexion */}
                     {view === 'signin' && (
