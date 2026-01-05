@@ -2,7 +2,7 @@
 import {useEffect, useState} from "react";
 import {signin, signup} from "@/actions/signActions";
 import Header from "@/components/Header";
-import {adaProjects, Promotions} from "@/content/interface";
+import {adaProjects, Projects, Promotions} from "@/content/interface";
 import AddProjectButton from "@/components/AddProjectButton";
 
 interface Props {
@@ -14,8 +14,8 @@ export default function SignPage({session}: Props) {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [getTypes, setGetTypes] = useState<adaProjects[]>([]);
     const [getPromotions, setGetPromotions] = useState<Promotions[]>([]);
-    const [getFormData, setGetFormData] = useState<any>([]);
-    const [filteredProjects, setFilteredProjects] = useState<any>([]);
+    const [getFormData, setGetFormData] = useState<Projects[]>([]);
+    const [filteredProjects, setFilteredProjects] = useState<Projects[]>([]);
     const [selectedFilter, setSelectedFilter] = useState<string>("");
     const [isLoading, setIsLoading] = useState(true);
 
@@ -23,31 +23,23 @@ export default function SignPage({session}: Props) {
         setView(view === 'signin' ? 'signup' : 'signin');
     };
 
-    const fetchProjects = async () => {
-        setIsLoading(true);
+    const fetchData = async (endpoint: string, setter: (data: any) => void, isProjectsFetch = false) => {
+        if (isProjectsFetch) setIsLoading(true);
         try {
-            const res = await fetch("/api/project_students");
+            const res = await fetch(endpoint);
             const result = await res.json();
-            setGetFormData(result);
-            setFilteredProjects(result);
+            setter(result);
+            if (isProjectsFetch) setFilteredProjects(result);
         } catch (error) {
-            console.error("Erreur lors de la récupération des projets :", error);
+            console.error(`Erreur lors de la récupération depuis ${endpoint}:`, error);
         } finally {
-            setIsLoading(false);
+            if (isProjectsFetch) setIsLoading(false);
         }
     };
 
-    async function fetchDataType() {
-        const res = await fetch("/api/ada_projects");
-        const result = await res.json();
-        setGetTypes(result);
-    }
-
-    async function fetchDataPromotions() {
-        const res = await fetch("/api/promotions");
-        const result = await res.json();
-        setGetPromotions(result);
-    }
+    const fetchProjects = () => fetchData("/api/project_students", setGetFormData, true);
+    const fetchDataType = () => fetchData("/api/ada_projects", setGetTypes);
+    const fetchDataPromotions = () => fetchData("/api/promotions", setGetPromotions);
 
     useEffect(() => {
         fetchDataType();
@@ -68,10 +60,25 @@ export default function SignPage({session}: Props) {
         }
     };
 
-    const handleProjectDeleted = () => {
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
         fetchProjects();
         setSelectedFilter("");
     };
+
+    const renderFormField = (label: string, name: string, type: string, placeholder: string) => (
+        <div>
+            <label className="block text-sm font-medium text-gray-700">{label} *</label>
+            <input
+                type={type}
+                name={name} // Doit correspondre au (ex `formData.get("email")` dans `signin`)
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder={placeholder}
+                required
+            />
+        </div>
+    );
 
     return (
         <div className="min-h-screen flex flex-col relative">
@@ -93,11 +100,7 @@ export default function SignPage({session}: Props) {
                 <AddProjectButton
                     getpromo={getPromotions}
                     gettype={getTypes}
-                    onClose={() => {
-                        setIsModalOpen(false);
-                        fetchProjects();
-                        setSelectedFilter("");
-                    }}
+                    onClose={handleModalClose}
                 />
             )}
 
@@ -110,30 +113,9 @@ export default function SignPage({session}: Props) {
                     {/* Formulaire de connexion */}
                     {view === 'signin' && (
                         <form action={signin} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Email *</label>
-                                <input
-                                    type="email"
-                                    name="email" // Doit correspondre au `formData.get("email")` dans `signin`
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                    placeholder="Votre email"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Mot de passe * </label>
-                                <input
-                                    type="password"
-                                    name="password" // Doit correspondre au `formData.get("password")` dans `signin`
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                    placeholder="Votre mot de passe"
-                                    required
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
+                            {renderFormField('Email', 'email', 'email', 'Votre email')}
+                            {renderFormField('Mot de passe', 'password', 'password', 'Votre mot de passe')}
+                            <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 Se connecter
                             </button>
                         </form>
@@ -142,50 +124,11 @@ export default function SignPage({session}: Props) {
                     {/* Formulaire d'inscription */}
                     {view === 'signup' && (
                         <form action={signup} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Nom *</label>
-                                <input
-                                    type="text"
-                                    name="name" // Doit correspondre au `formData.get("name")` dans `signup`
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                    placeholder="Votre nom"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Email *</label>
-                                <input
-                                    type="email"
-                                    name="email" // Doit correspondre au `formData.get("email")` dans `signup`
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                    placeholder="Votre email"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Mot de passe *</label>
-                                <input
-                                    type="password"
-                                    name="password" // Doit correspondre au `formData.get("password")` dans `signup`
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                    placeholder="Votre mot de passe"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Confirmer le mot de passe *</label>
-                                <input
-                                    type="password"
-                                    name="confirmPassword" // Doit correspondre au `formData.get("confirmPassword")` dans `signup`
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                    placeholder="Votre mot de passe"
-                                    required
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
+                            {renderFormField('Nom', 'name', 'text', 'Votre nom')}
+                            {renderFormField('Email', 'email', 'email', 'Votre email')}
+                            {renderFormField('Mot de passe', 'password', 'password', 'Votre mot de passe')}
+                            {renderFormField('Confirmer le mot de passe', 'confirmPassword', 'password', 'Votre mot de passe')}
+                            <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 S'inscrire
                             </button>
                         </form>
