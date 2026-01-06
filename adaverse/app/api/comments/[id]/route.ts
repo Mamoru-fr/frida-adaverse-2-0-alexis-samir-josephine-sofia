@@ -5,7 +5,7 @@ import {auth} from "@/lib/auth/auth";
 import {headers} from "next/headers";
 
 
-export const GET = async (request: Request, {params}: {params: {id: string}}) => {
+export const GET = async (request: Request, {params}: {params: Promise<{id: string}>}) => {
     const {id} = await params
     try {
         const getCommentsById = await db.select().from(comments).where(eq(comments.id, Number(id))).limit(1);
@@ -18,7 +18,7 @@ export const GET = async (request: Request, {params}: {params: {id: string}}) =>
     }
 }
 
-export const PUT = async (request: Request, {params}: {params: {id: string}}) => {
+export const PUT = async (request: Request, {params}: {params: Promise<{id: string}>}) => {
     const {id} = await params;
     const session = await auth.api.getSession({headers: await headers()});
     
@@ -53,7 +53,7 @@ export const PUT = async (request: Request, {params}: {params: {id: string}}) =>
     }
 }
 
-export const DELETE = async (request: Request, {params}: {params: {id: string}}) => {
+export const DELETE = async (request: Request, {params}: {params: Promise<{id: string}>}) => {
     const {id} = await params;
     const session = await auth.api.getSession({headers: await headers()});
     
