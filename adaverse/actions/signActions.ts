@@ -3,13 +3,14 @@
 import {auth} from "@/lib/auth/auth";
 import {headers} from "next/headers";
 import {redirect} from "next/navigation";
+import {translateError} from "@/utils/TranslateError";
 
 export const signin = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     
-    if (!email && !password) {
-        throw Error("email and password are required");
+    if (!email || !password) {
+        redirect("/connections?view=signin&error=" + encodeURIComponent("Email et mot de passe requis"));
     }
     
     const response = await auth.api.signInEmail({
@@ -20,8 +21,11 @@ export const signin = async (formData: FormData) => {
         asResponse: true,
     });
     if (!response.ok) {
-        console.error("Sign in failed:", await response.json());
-        redirect("/connections?error=true");
+        const errorData = await response.json();
+        console.error("Sign in failed:", errorData);
+        const errorMessage = errorData.message || errorData.error || "Email ou mot de passe incorrect";
+        const translatedError = translateError(errorMessage);
+        redirect(`/connections?view=signin&error=${encodeURIComponent(translatedError)}`);
     }
     redirect("/"); // on redirige vers la home page une fois connecté
 };
@@ -32,12 +36,12 @@ export const signup = async (formData: FormData) => {
     const password = formData.get("password") as string;
     const confirmPassword = formData.get("confirmPassword") as string;
     
-    if (!name && !email && !password && !confirmPassword) {
-        throw Error("Name, email, password and confirm password are required");
+    if (!name || !email || !password || !confirmPassword) {
+        redirect("/connections?view=signup&error=" + encodeURIComponent("Tous les champs sont requis"));
     }
 
     if (password !== confirmPassword) {
-        throw Error("Passwords do not match");
+        redirect("/connections?view=signup&error=" + encodeURIComponent("Les mots de passe ne correspondent pas"));
     }
     
     const response = await auth.api.signUpEmail({
@@ -49,8 +53,11 @@ export const signup = async (formData: FormData) => {
         asResponse: true,
     });
     if (!response.ok) {
-        console.error("Sign in failed:", await response.json());
-        redirect("/connections?error=true");
+        const errorData = await response.json();
+        console.error("Sign up failed:", errorData);
+        const errorMessage = errorData.message || errorData.error || "Une erreur est survenue lors de l'inscription";
+        const translatedError = translateError(errorMessage);
+        redirect(`/connections?view=signup&error=${encodeURIComponent(translatedError)}`);
     }
     redirect("/"); // on redirige vers la home page une fois connecté
 };

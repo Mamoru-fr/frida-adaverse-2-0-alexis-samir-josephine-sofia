@@ -1,10 +1,12 @@
 "use client"
 
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import Header from "../components/Header";
 import ProjectsCards from "../components/ProjectsCards";
 import {adaProjects, Projects, Promotions} from "../content/interface";
 import AddProjectButton from "../components/AddProjectButton";
+import Chatbox from "../components/Chatbox";
+
 
 export default function HomePage({session}: {session: any}) {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -14,6 +16,7 @@ export default function HomePage({session}: {session: any}) {
   const [filteredProjects, setFilteredProjects] = useState<Projects[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [openChat, setOpenChat] = useState(false)
 
   const fetchData = async (endpoint: string, setter: (data: any) => void, isProjectsFetch = false) => {
     if (isProjectsFetch) setIsLoading(true);
@@ -67,7 +70,7 @@ export default function HomePage({session}: {session: any}) {
 
   const renderProjectsList = (projects: Projects[], title: string, titleStyle: string) => {
     if (!Array.isArray(projects) || projects.length === 0) return null;
-    
+
     return (
       <>
         <h1 className={`${titleStyle}`}>{title} ({projects.length})</h1>
@@ -85,7 +88,7 @@ export default function HomePage({session}: {session: any}) {
     );
   };
 
-  const getProjectsByAdaType = (adaProjectId: number) => 
+  const getProjectsByAdaType = (adaProjectId: number) =>
     filteredProjects.filter((project: Projects) => project.adaProjectsId === adaProjectId);
 
   return (
@@ -116,7 +119,7 @@ export default function HomePage({session}: {session: any}) {
           ) : (
             <div>
               {session && renderProjectsList(sessionProjects, "Mes projets", "text-xl md:text-2xl mt-4")}
-              
+
               <h1 className="text-xl md:text-2xl mt-4">Tous les projets ({filteredProjects.length})</h1>
 
               <div className='flex flex-wrap gap-2 md:gap-4'>
@@ -126,7 +129,7 @@ export default function HomePage({session}: {session: any}) {
                   getAdaProjects.map((adaProject) => {
                     const projectsByType = getProjectsByAdaType(adaProject.id);
                     if (projectsByType.length === 0) return null;
-                    
+
                     return (
                       <div key={adaProject.id} className="w-full">
                         {renderProjectsList(projectsByType, adaProject.name, "text-lg md:text-xl w-full mt-2 mb-1")}
@@ -139,6 +142,9 @@ export default function HomePage({session}: {session: any}) {
           )}
         </div>
       </main>
+      <Chatbox />
     </div>
   )
+
+
 }
