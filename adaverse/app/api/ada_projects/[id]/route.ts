@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 
 
 
-export const GET = async (_req: Request, { params }: { params: { id: string } }) => {
+export const GET = async (_req: Request, { params }: { params: Promise<{ id: string }> }) => {
     try {
         console.log({ params })
         const { id } = await params;
