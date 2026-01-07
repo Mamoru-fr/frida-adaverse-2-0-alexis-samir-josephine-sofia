@@ -142,7 +142,7 @@ export default function HomePage({session}: {session: any}) {
           )}
         </div>
       </main>
-      <Chatbox />
+      <Chatbox projects={filteredProjects} />
     </div>
   )
 

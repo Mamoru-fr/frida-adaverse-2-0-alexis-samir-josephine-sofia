@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import {adaProjects, Projects, Promotions} from "@/content/interface";
 import AddProjectButton from "@/components/AddProjectButton";
 import {ErrorMessage} from "@/components/ErrorMessage";
+import Chatbox from "@/components/Chatbox";
 
 interface Props {
     session: any;
@@ -174,6 +175,7 @@ export default function SignPage({session}: Props) {
                     </div>
                 </div>
             </main>
+            <Chatbox />
         </div>
     )
 }
