@@ -4,7 +4,7 @@ import {comments, user} from "@/lib/db/schema";
 import {eq} from "drizzle-orm";
 
 
-export const GET = async (request: Request, {params}: {params: {id: string}}) => {
+export const GET = async (request: Request, {params}: {params: Promise<{id: string}>}) => {
     console.log({params})
     const {id} = await params;
     try {
