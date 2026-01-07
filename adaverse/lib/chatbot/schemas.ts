@@ -20,4 +20,15 @@ export const ConversationSchema = z.array(
 // TypeScript types dérivés des schémas Zod
 // export type UserMessage = z.infer<typeof UserMessageSchema>;
 // export type AIMessage = z.infer<typeof AIMessageSchema>;
-// export type Conversation = z.infer<typeof ConversationSchema>;
+// // export type Conversation = z.infer<typeof ConversationSchema>;
+
+// export function validateConversation(messages: unknown) {
+//   try {
+//     const conversation = ConversationSchema.parse(messages);
+//     console.log("Conversation valide :", conversation);
+//     return conversation;
+//   } catch (error) {
+//     console.error("Erreur de validation :", error);
+//     throw new Error("La structure de la conversation est invalide.");
+//   }
+// }
