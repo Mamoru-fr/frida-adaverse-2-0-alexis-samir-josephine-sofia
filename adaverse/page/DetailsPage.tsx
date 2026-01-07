@@ -6,6 +6,7 @@ import {FormatDatePlainText} from '@/utils/FormatDate';
 import {adaProjects, Projects, Promotions} from '@/content/interface';
 import {Github, Image, Palette, PlayCircle, User, Users} from 'lucide-react';
 import {AllComments} from '@/components/Comments/AllComments';
+import Chatbox from '@/components/Chatbox';
 
 // Construit l'URL raw de thumbnail.png à partir du githubUrl
 function getThumbnailUrl(githubUrl: string) {
@@ -236,6 +237,7 @@ export default function DetailsPage({session}: {session: any}) {
                 </div>
                 <AllComments projectId={project.id} session={session} />
             </div>
+            <Chatbox projects={[project]} />
         </div>
     );
 }
