@@ -237,7 +237,7 @@ export default function DetailsPage({session}: {session: any}) {
                 </div>
                 <AllComments projectId={project.id} session={session} />
             </div>
-            <Chatbox projects={[project]} />
+            <Chatbox projects={[project]} author={githubUsername} projectType={adaProjects?.name} promotions={promotions?.name} />
         </div>
     );
 }

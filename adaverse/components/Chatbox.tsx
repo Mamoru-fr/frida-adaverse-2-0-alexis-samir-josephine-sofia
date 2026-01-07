@@ -21,7 +21,7 @@ function validateConversation(messages: unknown) {
 	}
 }
 
-const Chatbox = ({projects = []}: {projects?: Projects[]}) => {
+const Chatbox = ({projects = [], author, projectType, promotions}: {projects?: Projects[], author?: string, projectType?: string, promotions?: string}) => {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [input, setInput] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +52,9 @@ const Chatbox = ({projects = []}: {projects?: Projects[]}) => {
 - Titre : "${p.title}"
 - GitHub : ${p.githubUrl}
 - Démo : ${p.demoUrl || 'Non disponible'}
+- Auteur : ${author || 'Inconnu'}
+- Type de Projet : ${projectType || 'Inconnu'}
+- Promotions des Créateurs : ${promotions || 'Inconnue'}
 - Date de création : ${new Date(p.createdAt).toLocaleDateString('fr-FR')}
 - Date de publication : ${p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('fr-FR') : 'Non publié'}
 
