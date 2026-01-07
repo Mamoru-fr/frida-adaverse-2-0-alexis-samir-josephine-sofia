@@ -85,7 +85,30 @@ Quand l'utilisateur parle de "ce projet" ou "le projet", il fait référence à 
 
 			if (!response.ok) {
 				console.error('API Error:', data);
-				throw new Error(data.error || 'Failed to get AI response');
+				
+				// Erreurs à afficher à l'utilisateur
+				let errorMessage = "Désolé, je rencontre un problème technique. Veuillez réessayer dans quelques instants.";
+				
+				// Erreur de clé API ou problème serveur -> message générique (ne pas exposer les détails)
+				if (data.error?.includes('apiKey') || data.error?.includes('credentials')) {
+					errorMessage = "Le service est temporairement indisponible. Veuillez réessayer plus tard.";
+				}
+				// Erreur réseau ou timeout -> message spécifique
+				else if (response.status >= 500) {
+					errorMessage = "Le serveur ne répond pas. Veuillez réessayer dans quelques instants.";
+				}
+				// Erreur de quota ou rate limit
+				else if (response.status === 429) {
+					errorMessage = "Trop de demandes. Veuillez patienter un moment avant de réessayer.";
+				}
+				
+				// Afficher l'erreur dans le chat
+				const errorAiMessage: Message = {
+					role: 'assistant',
+					content: errorMessage
+				};
+				setMessages((prevMessages) => [...prevMessages, errorAiMessage]);
+				return;
 			}
 
 			const aiMessage = data;
@@ -95,6 +118,13 @@ Quand l'utilisateur parle de "ce projet" ou "le projet", il fait référence à 
 			});
 		} catch (error) {
 			console.error("Erreur lors de l'obtention de la réponse de l'IA :", error);
+			
+			// Afficher un message d'erreur générique dans le chat pour les erreurs inattendues
+			const errorAiMessage: Message = {
+				role: 'assistant',
+				content: "Une erreur inattendue s'est produite. Veuillez vérifier votre connexion internet et réessayer."
+			};
+			setMessages((prevMessages) => [...prevMessages, errorAiMessage]);
 		}
 	};
 
